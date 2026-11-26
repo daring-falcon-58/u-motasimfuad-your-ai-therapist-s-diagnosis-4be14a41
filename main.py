@@ -33,6 +33,11 @@ def main() -> None:
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
         f.write(ENTRY)
+    # Read-back verification: confirm the file on disk is exactly ENTRY —
+    # catches a partial or failed write instead of silently shipping it.
+    with open(os.path.join(out_dir, "entry.txt"), "r", encoding="utf-8") as f:
+        written = f.read()
+    assert written == ENTRY, "entry.txt on disk does not match ENTRY"
 
 
 if __name__ == "__main__":
